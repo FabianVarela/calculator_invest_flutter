@@ -22,7 +22,8 @@ class CalculateFrom extends StatefulWidget {
 
 class CalculateFormState extends State<CalculateFrom> {
   final minimumPadding = 5.0;
-  
+
+  var formKey = GlobalKey<FormState>();
   var currencies = ['COP','USD','EUR'];
   var currentItemSelected = '';
 
@@ -46,117 +47,149 @@ class CalculateFormState extends State<CalculateFrom> {
       appBar: AppBar(
         title: Text('Simple Invest Calculator')
       ),
-      body: Container(
-        margin: EdgeInsets.all(minimumPadding * 2),
-        child: ListView(
-          children: <Widget>[
-            getAssetImage(),
-            Padding(
-              padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
-              child: TextField(
-                keyboardType: TextInputType.number,
-                style: textStyle,
-                controller: principalValueController,
-                decoration: InputDecoration(
-                  labelText: 'Principal value',
-                  hintText: 'Enter principal value, ej, 10000',
-                  labelStyle: textStyle,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5)
-                  )
+      body: Form(
+        key: formKey,
+        child: Padding(
+          padding: EdgeInsets.all(minimumPadding * 2),
+          child: ListView(
+            children: <Widget>[
+              getAssetImage(),
+              Padding(
+                padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: textStyle,
+                  controller: principalValueController,
+                  validator: (String value) {
+                    if(value.isEmpty) {
+                      return 'Please enter principal amount';
+                    }
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Principal value',
+                    hintText: 'Enter principal value, ej, 10000',
+                    labelStyle: textStyle,
+                    errorStyle: TextStyle(
+                      color: Colors.red,
+                      fontSize: 15
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5)
+                    )
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
-              child: TextField(
-                keyboardType: TextInputType.number,
-                style: textStyle,
-                controller: rateValueController,
-                decoration: InputDecoration(
-                  labelText: 'Rate of interest',
-                  hintText: 'Enter percent value',
-                  labelStyle: textStyle,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5)
-                  )
-                ),
-              )
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      style: textStyle,
-                      controller: timeValueController,
-                      decoration: InputDecoration(
-                        labelText: 'Time',
-                        hintText: 'Time in years',
-                        labelStyle: textStyle,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5)
-                        )
+              Padding(
+                padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: textStyle,
+                  controller: rateValueController,
+                  validator: (String value) {
+                    if(value.isEmpty) {
+                      return 'Please enter rate value';
+                    }
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Rate of interest',
+                    hintText: 'Enter percent value',
+                    labelStyle: textStyle,
+                    errorStyle: TextStyle(
+                      color: Colors.red,
+                      fontSize: 15
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5)
+                    )
+                  ),
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        style: textStyle,
+                        controller: timeValueController,
+                        validator: (String value) {
+                          if(value.isEmpty) {
+                            return 'Please enter the time value';
+                          }
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Time',
+                          hintText: 'Time in years',
+                          labelStyle: textStyle,
+                          errorStyle: TextStyle(
+                            color: Colors.red,
+                            fontSize: 15
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5)
+                          )
+                        ),
+                      )
+                    ),
+                    Container(width: minimumPadding * 5),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        items: currencies.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value)
+                          );
+                        }).toList(),
+                        value: currentItemSelected,
+                        onChanged: (String newValueSelected) {
+                          dropDownItemSelected(newValueSelected);
+                        },
+                      )
+                    )
+                  ],
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                        child: Text('Calculate', textScaleFactor: 1.5),
+                        onPressed: () {
+                          setState(() {
+                            if(formKey.currentState.validate()) {
+                              displayText = calculateTotal();
+                            }
+                          });
+                        }
+                      ),
+                    ),
+                    Container(width: minimumPadding *1),
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.grey,
+                        textColor: Colors.white,
+                        child: Text('Reset', textScaleFactor: 1.5),
+                        onPressed: () {
+                          setState(() {
+                            reset();
+                          });
+                        }
                       ),
                     )
-                  ),
-                  Container(width: minimumPadding * 5),
-                  Expanded(
-                    child: DropdownButton<String>(
-                      items: currencies.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value)
-                        );
-                      }).toList(),
-                      value: currentItemSelected,
-                      onChanged: (String newValueSelected) {
-                        dropDownItemSelected(newValueSelected);
-                      },
-                    )
-                  )
-                ],
+                  ],
+                )
+              ),
+              Padding(
+                padding: EdgeInsets.all(minimumPadding * 2),
+                child: Text(displayText, style: textStyle)
               )
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: RaisedButton(
-                      color: Colors.blue,
-                      textColor: Colors.white,
-                      child: Text('Calculate', textScaleFactor: 1.5),
-                      onPressed: () {
-                        setState(() {
-                          displayText = calculateTotal();
-                        });
-                      }
-                    ),
-                  ),
-                  Container(width: minimumPadding *1),
-                  Expanded(
-                    child: RaisedButton(
-                      color: Colors.grey,
-                      textColor: Colors.white,
-                      child: Text('Reset', textScaleFactor: 1.5),
-                      onPressed: () {
-                        setState(() {
-                          reset();
-                        });
-                      }
-                    ),
-                  )
-                ],
-              )
-            ),
-            Padding(
-              padding: EdgeInsets.all(minimumPadding * 2),
-              child: Text(displayText, style: textStyle)
-            )
-          ],
+            ],
+          )
         )
       )
     );
