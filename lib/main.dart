@@ -21,16 +21,28 @@ class CalculateFrom extends StatefulWidget {
 }
 
 class CalculateFormState extends State<CalculateFrom> {
-  var currencies = ['COP','USD','EUR','Other'];
   final minimumPadding = 5.0;
+  
+  var currencies = ['COP','USD','EUR'];
+  var currentItemSelected = '';
+
+  @override
+  void initState() {
+    super.initState();
+    currentItemSelected = currencies[0];
+  }
+
+  TextEditingController principalValueController = TextEditingController();
+  TextEditingController rateValueController = TextEditingController();
+  TextEditingController timeValueController = TextEditingController();
+
+  var displayText = '';
 
   @override
   Widget build(BuildContext context) {
-
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
     return Scaffold(
-      //resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Simple Invest Calculator')
       ),
@@ -44,9 +56,10 @@ class CalculateFormState extends State<CalculateFrom> {
               child: TextField(
                 keyboardType: TextInputType.number,
                 style: textStyle,
+                controller: principalValueController,
                 decoration: InputDecoration(
                   labelText: 'Principal value',
-                  hintText: 'Enter percent value',
+                  hintText: 'Enter principal value, ej, 10000',
                   labelStyle: textStyle,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5)
@@ -59,9 +72,10 @@ class CalculateFormState extends State<CalculateFrom> {
               child: TextField(
                 keyboardType: TextInputType.number,
                 style: textStyle,
+                controller: rateValueController,
                 decoration: InputDecoration(
                   labelText: 'Rate of interest',
-                  hintText: 'Enter principal value, ej, 10000',
+                  hintText: 'Enter percent value',
                   labelStyle: textStyle,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5)
@@ -77,6 +91,7 @@ class CalculateFormState extends State<CalculateFrom> {
                     child: TextField(
                       keyboardType: TextInputType.number,
                       style: textStyle,
+                      controller: timeValueController,
                       decoration: InputDecoration(
                         labelText: 'Time',
                         hintText: 'Time in years',
@@ -96,9 +111,9 @@ class CalculateFormState extends State<CalculateFrom> {
                           child: Text(value)
                         );
                       }).toList(),
-                      value: currencies[0],
+                      value: currentItemSelected,
                       onChanged: (String newValueSelected) {
-
+                        dropDownItemSelected(newValueSelected);
                       },
                     )
                   )
@@ -115,7 +130,9 @@ class CalculateFormState extends State<CalculateFrom> {
                       textColor: Colors.white,
                       child: Text('Calculate', textScaleFactor: 1.5),
                       onPressed: () {
-
+                        setState(() {
+                          displayText = calculateTotal();
+                        });
                       }
                     ),
                   ),
@@ -126,7 +143,9 @@ class CalculateFormState extends State<CalculateFrom> {
                       textColor: Colors.white,
                       child: Text('Reset', textScaleFactor: 1.5),
                       onPressed: () {
-                        
+                        setState(() {
+                          reset();
+                        });
                       }
                     ),
                   )
@@ -135,7 +154,7 @@ class CalculateFormState extends State<CalculateFrom> {
             ),
             Padding(
               padding: EdgeInsets.all(minimumPadding * 2),
-              child: Text('Todo text', style: textStyle)
+              child: Text(displayText, style: textStyle)
             )
           ],
         )
@@ -148,5 +167,30 @@ class CalculateFormState extends State<CalculateFrom> {
     Image image = Image(image: assetImage, width: 125, height: 125);
 
     return Container(child: image, margin: EdgeInsets.all(minimumPadding * 10));
+  }
+
+  void dropDownItemSelected(String newValueSelected) {
+    setState(() {
+      this.currentItemSelected = newValueSelected;
+    });
+  }
+
+  String calculateTotal() {
+    double principal = double.parse(principalValueController.text);
+    double rate = double.parse(rateValueController.text);
+    double time = double.parse(timeValueController.text);
+
+    double result = principal + (principal * rate * time) / 100;
+
+    return 'After $time years your investment will be worth $result in $currentItemSelected';
+  }
+
+  void reset() {
+    principalValueController.text = '';
+    rateValueController.text = '';
+    timeValueController.text = '';
+
+    displayText = '';
+    currentItemSelected = currencies[0];
   }
 }
