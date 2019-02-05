@@ -7,8 +7,7 @@ void main() {
       home: CalculateFrom(),
       theme: ThemeData(
         primaryColor: Colors.blueGrey,
-        accentColor: Colors.blueAccent,
-        brightness: Brightness.dark
+        accentColor: Colors.blueAccent
       ),
     )
   );
