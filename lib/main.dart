@@ -21,16 +21,16 @@ class CalculateFrom extends StatefulWidget {
 }
 
 class CalculateFormState extends State<CalculateFrom> {
-  final minimumPadding = 5.0;
+  final _minimumPadding = 5.0;
 
-  var formKey = GlobalKey<FormState>();
-  var currencies = ['COP','USD','EUR'];
-  var currentItemSelected = '';
+  var _formKey = GlobalKey<FormState>();
+  var _currencies = ['COP','USD','EUR'];
+  var _currentItemSelected = '';
 
   @override
   void initState() {
     super.initState();
-    currentItemSelected = currencies[0];
+    _currentItemSelected = _currencies[0];
   }
 
   TextEditingController principalValueController = TextEditingController();
@@ -48,14 +48,14 @@ class CalculateFormState extends State<CalculateFrom> {
         title: Text('Simple Invest Calculator')
       ),
       body: Form(
-        key: formKey,
+        key: _formKey,
         child: Padding(
-          padding: EdgeInsets.all(minimumPadding * 2),
+          padding: EdgeInsets.all(_minimumPadding * 2),
           child: ListView(
             children: <Widget>[
               getAssetImage(),
               Padding(
-                padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
+                padding: EdgeInsets.only(top: _minimumPadding, bottom: _minimumPadding),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   style: textStyle,
@@ -80,7 +80,7 @@ class CalculateFormState extends State<CalculateFrom> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
+                padding: EdgeInsets.only(top: _minimumPadding, bottom: _minimumPadding),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   style: textStyle,
@@ -105,7 +105,7 @@ class CalculateFormState extends State<CalculateFrom> {
                 )
               ),
               Padding(
-                padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
+                padding: EdgeInsets.only(top: _minimumPadding, bottom: _minimumPadding),
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -132,16 +132,16 @@ class CalculateFormState extends State<CalculateFrom> {
                         ),
                       )
                     ),
-                    Container(width: minimumPadding * 5),
+                    Container(width: _minimumPadding * 5),
                     Expanded(
                       child: DropdownButton<String>(
-                        items: currencies.map((String value) {
+                        items: _currencies.map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value)
                           );
                         }).toList(),
-                        value: currentItemSelected,
+                        value: _currentItemSelected,
                         onChanged: (String newValueSelected) {
                           dropDownItemSelected(newValueSelected);
                         },
@@ -151,7 +151,7 @@ class CalculateFormState extends State<CalculateFrom> {
                 )
               ),
               Padding(
-                padding: EdgeInsets.only(top: minimumPadding, bottom: minimumPadding),
+                padding: EdgeInsets.only(top: _minimumPadding, bottom: _minimumPadding),
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -161,14 +161,14 @@ class CalculateFormState extends State<CalculateFrom> {
                         child: Text('Calculate', textScaleFactor: 1.5),
                         onPressed: () {
                           setState(() {
-                            if(formKey.currentState.validate()) {
+                            if(_formKey.currentState.validate()) {
                               displayText = calculateTotal();
                             }
                           });
                         }
                       ),
                     ),
-                    Container(width: minimumPadding *1),
+                    Container(width: _minimumPadding *1),
                     Expanded(
                       child: RaisedButton(
                         color: Colors.grey,
@@ -185,7 +185,7 @@ class CalculateFormState extends State<CalculateFrom> {
                 )
               ),
               Padding(
-                padding: EdgeInsets.all(minimumPadding * 2),
+                padding: EdgeInsets.all(_minimumPadding * 2),
                 child: Text(displayText, style: textStyle)
               )
             ],
@@ -199,12 +199,12 @@ class CalculateFormState extends State<CalculateFrom> {
     AssetImage assetImage = AssetImage('images/invest.png');
     Image image = Image(image: assetImage, width: 125, height: 125);
 
-    return Container(child: image, margin: EdgeInsets.all(minimumPadding * 10));
+    return Container(child: image, margin: EdgeInsets.all(_minimumPadding * 10));
   }
 
   void dropDownItemSelected(String newValueSelected) {
     setState(() {
-      this.currentItemSelected = newValueSelected;
+      _currentItemSelected = newValueSelected;
     });
   }
 
@@ -215,7 +215,7 @@ class CalculateFormState extends State<CalculateFrom> {
 
     double result = principal + (principal * rate * time) / 100;
 
-    return 'After $time years your investment will be worth $result in $currentItemSelected';
+    return 'After $time years your investment will be worth $result in $_currentItemSelected';
   }
 
   void reset() {
@@ -224,6 +224,6 @@ class CalculateFormState extends State<CalculateFrom> {
     timeValueController.text = '';
 
     displayText = '';
-    currentItemSelected = currencies[0];
+    _currentItemSelected = _currencies[0];
   }
 }
