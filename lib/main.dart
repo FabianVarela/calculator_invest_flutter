@@ -8,6 +8,7 @@ void main() {
       title: 'Simple Invest Calculator App',
       home: CalculateFrom(),
       theme: ThemeData(
+        fontFamily: 'NotoSansJP',
         primaryColor: Colors.blueGrey,
         accentColor: Colors.blue,
         backgroundColor: Colors.white,
