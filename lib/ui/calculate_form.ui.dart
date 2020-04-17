@@ -66,15 +66,15 @@ class CalculateFormState extends State<CalculateFrom> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 32,
+                  fontWeight: FontWeight.w700,
                   color: Theme.of(context).backgroundColor,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
           ),
           Positioned(
             top: MediaQuery.of(context).size.height * .15,
-            right: MediaQuery.of(context).size.width * .12,
+            right: MediaQuery.of(context).size.width * .11,
             child: Image(
               image: AssetImage('images/invest.png'),
               fit: BoxFit.fill,
@@ -86,7 +86,7 @@ class CalculateFormState extends State<CalculateFrom> {
             top: 50,
             right: 30,
             child: InkWell(
-              onTap: () => setState(_reset),
+              onTap: _reset,
               customBorder: CircleBorder(),
               child: Padding(
                 padding: EdgeInsets.all(12),
@@ -94,7 +94,13 @@ class CalculateFormState extends State<CalculateFrom> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Icon(Icons.clear_all, size: 40),
-                    Text('Clear', style: TextStyle(fontSize: 12))
+                    Text(
+                      'Clear',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w100,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -191,9 +197,13 @@ class CalculateFormState extends State<CalculateFrom> {
         hintText: hint,
         labelStyle: TextStyle(
           fontSize: 15,
+          fontWeight: FontWeight.w300,
           color: Theme.of(context).primaryColor,
         ),
-        errorStyle: TextStyle(fontSize: 15),
+        errorStyle: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w100,
+        ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
       ),
     );
@@ -215,6 +225,7 @@ class CalculateFormState extends State<CalculateFrom> {
         textScaleFactor: 1.5,
         style: TextStyle(
           fontSize: 16,
+          fontWeight: FontWeight.w100,
           color: Theme.of(context).backgroundColor,
         ),
       ),
@@ -251,12 +262,24 @@ class CalculateFormState extends State<CalculateFrom> {
   }
 
   void _reset() {
-    _principalValueController.updateValue(0);
-    _rateValueController.text = '';
-    _timeValueController.text = '';
-    _currentItemSelected = _currencies[0];
+    _clearTextField(_principalValueController);
+    _clearTextField(_rateValueController);
+    _clearTextField(_timeValueController);
 
+    _currentItemSelected = _currencies[0];
     _formKey.currentState.reset();
+  }
+
+  void _clearTextField(TextEditingController controller) {
+    Future<void>.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        if (controller is MoneyMaskedTextController) {
+          controller.updateValue(0);
+        } else {
+          controller.clear();
+        }
+      });
+    });
   }
 
   void _showDialog(String message) {
@@ -287,7 +310,7 @@ class CalculateFormState extends State<CalculateFrom> {
                 'Success!!',
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
