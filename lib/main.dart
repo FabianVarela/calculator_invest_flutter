@@ -1,7 +1,15 @@
 import 'package:calculator_invest_flutter/ui/calculate_form.ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations(
+      <DeviceOrientation>[DeviceOrientation.portraitUp]);
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
