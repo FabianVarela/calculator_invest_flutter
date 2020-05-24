@@ -1,6 +1,7 @@
 import 'package:calculator_invest_flutter/ui/calculate_form.ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Simple Invest Calculator App',
       home: CalculateFrom(),
       theme: ThemeData(
-        fontFamily: 'NotoSansJP',
+        textTheme: GoogleFonts.notoSansTextTheme(Theme.of(context).textTheme),
         primaryColor: Colors.blueGrey,
         accentColor: Colors.blue,
         backgroundColor: Colors.white,

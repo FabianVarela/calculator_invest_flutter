@@ -76,7 +76,7 @@ class CalculateFormState extends State<CalculateFrom> {
             top: MediaQuery.of(context).size.height * .15,
             right: MediaQuery.of(context).size.width * .11,
             child: Image(
-              image: AssetImage('images/invest.png'),
+              image: AssetImage('assets/images/invest.png'),
               fit: BoxFit.fill,
               width: 150,
               height: 100,
