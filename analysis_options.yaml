@@ -6,4 +6,7 @@ analyzer:
 
 linter:
   rules:
+    avoid_print: false
+    avoid_dynamic_calls: false
+    constant_identifier_names: false
     public_member_api_docs: false
