@@ -1,5 +1,6 @@
 import 'package:calculator_invest_flutter/view/widgets/custom_button.dart';
 import 'package:calculator_invest_flutter/view/widgets/custom_segmented_control.dart';
+import 'package:calculator_invest_flutter/view/widgets/label_form.dart';
 import 'package:calculator_invest_flutter/view/widgets/slide_number_container.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ class _InvestFormSectionState extends State<InvestFormSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          const _TitleSection(title: 'Currency'),
+          const LabelForm(title: 'Currency'),
           Padding(
             padding: const EdgeInsets.only(bottom: 25),
             child: CustomSegmentedControl(
@@ -42,7 +43,7 @@ class _InvestFormSectionState extends State<InvestFormSection> {
               },
             ),
           ),
-          const _TitleSection(title: 'Initial Investment'),
+          const LabelForm(title: 'Initial Investment'),
           Padding(
             padding: const EdgeInsets.only(bottom: 5),
             child: SlideNumberContainer(
@@ -56,7 +57,7 @@ class _InvestFormSectionState extends State<InvestFormSection> {
               },
             ),
           ),
-          const _TitleSection(title: 'Additional Contribution'),
+          const LabelForm(title: 'Additional Contribution'),
           Padding(
             padding: const EdgeInsets.only(bottom: 5),
             child: SlideNumberContainer(
@@ -70,7 +71,7 @@ class _InvestFormSectionState extends State<InvestFormSection> {
               },
             ),
           ),
-          const _TitleSection(title: 'Contribute each'),
+          const LabelForm(title: 'Contribute each'),
           Padding(
             padding: const EdgeInsets.only(bottom: 25),
             child: CustomSegmentedControl(
@@ -81,7 +82,7 @@ class _InvestFormSectionState extends State<InvestFormSection> {
               },
             ),
           ),
-          const _TitleSection(title: 'Interest Rate'),
+          const LabelForm(title: 'Interest Rate'),
           Padding(
             padding: const EdgeInsets.only(bottom: 5),
             child: SlideNumberContainer(
@@ -95,7 +96,7 @@ class _InvestFormSectionState extends State<InvestFormSection> {
               },
             ),
           ),
-          const _TitleSection(title: 'Interest is compounded'),
+          const LabelForm(title: 'Interest is compounded'),
           Padding(
             padding: const EdgeInsets.only(bottom: 25),
             child: CustomSegmentedControl(
@@ -106,7 +107,7 @@ class _InvestFormSectionState extends State<InvestFormSection> {
               },
             ),
           ),
-          const _TitleSection(title: 'Years to grow'),
+          const LabelForm(title: 'Years to grow'),
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: SlideNumberContainer(
@@ -125,27 +126,6 @@ class _InvestFormSectionState extends State<InvestFormSection> {
             onPressed: () {},
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _TitleSection extends StatelessWidget {
-  const _TitleSection({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 12),
-      alignment: Alignment.centerLeft,
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 14,
-          color: Theme.of(context).primaryColor,
-        ),
       ),
     );
   }
